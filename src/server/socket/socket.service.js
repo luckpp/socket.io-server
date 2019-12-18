@@ -1,5 +1,7 @@
 const socket = require('socket.io');
 const Base = require('../../infrastructure/base');
+const MessengerChannel = require('./channels/messenger/messenger.channel');
+const UserChannel = require('./channels/user/user.channel');
 
 class SocketService extends Base {
 
@@ -11,22 +13,21 @@ class SocketService extends Base {
     startListening(server) {
         this.io = socket(server);
 
-        let messengerChannel = this.io.of('/messenger/data');
-        messengerChannel.on('connection', (socket) => {
-            this.logger.debug(`[MessengerChannel] Socket [${socket.id}] connected:`, socket.handshake.query);
-            socket.on('disconnect', () => {
-                this.logger.debug(`[MessengerChannel] Socket [${socket.id}] disconnected.`);
-            });
-        });
-        this.channels['messenger'] = messengerChannel;
+        let messengerChannel = new MessengerChannel(this.io);
+        let deviceChannel = new UserChannel(this.io);
+
+        this.channels[messengerChannel.id] = messengerChannel;
+        this.channels[deviceChannel.id] = deviceChannel;
     }
 
-    emitEvent(channel, eventName, eventPayload) {
-        this.logger.info(`Channel [${channel}], EventName: [${eventName}], EventPayload:`, eventPayload);
-        if (this.channels[channel]) {
-            this.channels[channel].emit(eventName, eventPayload);
+    emitEvent(channelId, eventName, eventPayload) {
+        this.logger.info(`Channel [${channelId}], EventName: [${eventName}], EventPayload:`, eventPayload);
+        if (this.channels[channelId]) {
+            this.channels[channelId].channel.emit(eventName, eventPayload);
         }
     }
+
+    // Deprecated
 
     startListeningDefault(server) {
         this.io = socket(server);
