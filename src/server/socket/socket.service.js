@@ -39,10 +39,10 @@ class SocketService extends Base {
         let channels = {};
 
         let messengerChannel = new MessengerChannel(io);
-        channels[messengerChannel.id] = messengerChannel;
+        channels[messengerChannel.name] = messengerChannel;
 
         let deviceChannel = new UserChannel(io);
-        channels[deviceChannel.id] = deviceChannel;
+        channels[deviceChannel.name] = deviceChannel;
 
         return channels;
     }
@@ -57,12 +57,12 @@ class SocketService extends Base {
 
     // for internal use
     emitEvent(eventWrapper) {
-        let channelId = eventWrapper.channelId;
+        let channelName = eventWrapper.channelName;
         let event = eventWrapper.event;
 
-        let channel = this.channels[channelId];
+        let channel = this.channels[channelName];
         if (!channel) {
-            return new Status(false, `Unable to find channel [${channelId}]`);
+            return new Status(false, `Unable to find channel [${channelName}]`);
         } 
         let status = channel.emit(event);
         return status;

@@ -1,10 +1,10 @@
 const ChannelBase = require('../channel.base');
-const ChannelIds = require('../channel.ids');
+const channelNames = require('../channel.names');
 
 class MessageChannel extends ChannelBase {
 
     constructor(io) {
-        super(io, ChannelIds.message);
+        super(io, channelNames.message);
     }
 }
 

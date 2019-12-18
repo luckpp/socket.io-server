@@ -1,16 +1,16 @@
 const Base = require('../../../infrastructure/base');
-const channelIds = require('./channel.ids');
+const channelNames = require('./channel.names');
 
 class ChannelValidator extends Base {
 
     constructor() {
         super();
-        this.values = Object.values(channelIds); 
+        this.name = Object.values(channelNames); 
     }
 
-    isValid(channelId) {
-        return this.values
-            && this.values.includes(channelId);
+    isValid(channelName) {
+        return this.name
+            && this.name.includes(channelName);
     }
 }
 

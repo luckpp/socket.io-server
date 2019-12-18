@@ -1,10 +1,10 @@
 const ChannelBase = require('../channel.base');
-const ChannelIds = require('../channel.ids');
+const channelNames = require('../channel.names');
 
 class UserChannel extends ChannelBase {
 
     constructor(io) {
-        super(io, ChannelIds.user);
+        super(io, channelNames.user);
     }
 }
 

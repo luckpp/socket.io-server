@@ -6,11 +6,11 @@ class EventValidator extends Base {
 
     validateWrapper(eventWrapper) {
 
-        let channelId = eventWrapper.channelId;
+        let channelName = eventWrapper.channelName;
         let event = eventWrapper.event;
 
-        if (!channelValidator.isValid(channelId)) {
-            return new Status(false, `Invalid channel [${channelId}]`);
+        if (!channelValidator.isValid(channelName)) {
+            return new Status(false, `Invalid channel [${channelName}]`);
         }
 
         return new Status(true, 'Message is valid');

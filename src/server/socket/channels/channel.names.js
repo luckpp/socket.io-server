@@ -1,10 +1,10 @@
 // NOTE: the names should contain only [a..z] chars
-let channelIds = {
+let channelNames = {
     application: 'application',
     message: 'message',
     user: 'user'
 };
 
-Object.freeze(channelIds);
+Object.freeze(channelNames);
 
-module.exports = channelIds;
+module.exports = channelNames;
