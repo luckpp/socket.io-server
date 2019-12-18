@@ -2,6 +2,8 @@ const socket = require('socket.io');
 const Base = require('../../infrastructure/base');
 const MessengerChannel = require('./channels/message/message.channel');
 const UserChannel = require('./channels/user/user.channel');
+const eventValidator = require('./events/event.validator');
+const Status = require('./status');
 
 class SocketService extends Base {
 
@@ -19,6 +21,7 @@ class SocketService extends Base {
         this.channels = channels;
     }
 
+    // for internal use
     attachMiddleware(io) {
         io.use((socket, next) => {
             let token = socket.handshake.query.token;
@@ -31,6 +34,7 @@ class SocketService extends Base {
         });
     }
 
+    // for internal use
     createChannels(io) {
         let channels = {};
 
@@ -43,11 +47,25 @@ class SocketService extends Base {
         return channels;
     }
 
-    emitEvent(channelId, eventName, eventPayload) {
-        this.logger.info(`Channel [${channelId}], EventName: [${eventName}], EventPayload:`, eventPayload);
-        if (this.channels[channelId]) {
-            this.channels[channelId].channel.emit(eventName, eventPayload);
+    processEvent(eventWrapper) {
+        let status = eventValidator.validateWrapper(eventWrapper);
+        if (status.success) {
+            status = this.emitEvent(eventWrapper);
         }
+        return status;
+    }
+
+    // for internal use
+    emitEvent(eventWrapper) {
+        let channelId = eventWrapper.channelId;
+        let event = eventWrapper.event;
+
+        let channel = this.channels[channelId];
+        if (!channel) {
+            return new Status(false, `Unable to find channel [${channelId}]`);
+        } 
+        let status = channel.emit(event);
+        return status;
     }
 }
 

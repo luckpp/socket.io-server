@@ -4,15 +4,22 @@ const socketService = require('../../socket/socket.service');
 class EventsController extends Base {
 
     publishEvent(req, res, next) {
-        let body = req.body;
-        this.logger.info('[EventsController] received event: ', body);
+        let eventWrapper = req.body;
+        this.logger.info('[EventsController] Received event: ', eventWrapper);
 
-        
-        
-        socketService.emitEvent('messenger', 'messenger-default-event', req.body);
-        res.json({
-            message: 'POST events.controller'
-        });
+        let status = socketService.processEvent(eventWrapper);
+        this.logger.info('[EventsController] Delivered event with status:', status);
+        if (status.success) {
+            res.json({
+                message: status.message,
+                uuid: status.uuid
+            });
+        } else {
+            res.status(400);
+            res.json({
+                message: status.message
+            })
+        }
     }
 }
 

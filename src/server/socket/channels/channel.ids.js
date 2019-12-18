@@ -1,4 +1,4 @@
-// NOTE: the ids should contain only [a..z] chars
+// NOTE: the names should contain only [a..z] chars
 let channelIds = {
     application: 'application',
     message: 'message',
