@@ -1,11 +1,11 @@
 const ChannelBase = require('../channel.base');
 const ChannelIds = require('../channel.ids');
 
-class MessengerChannel extends ChannelBase {
+class MessageChannel extends ChannelBase {
 
     constructor(io) {
-        super(io, ChannelIds.messenger);
+        super(io, ChannelIds.message);
     }
 }
 
-module.exports = MessengerChannel;
+module.exports = MessageChannel;

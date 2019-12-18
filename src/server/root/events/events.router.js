@@ -1,5 +1,8 @@
 const expressRouter = require('express').Router;
 const eventsController = require('./events.controller');
+const applicationsRouter = require('./applications/applications.router');
+const messagesRouter = require('./messages/messages.router');
+const usersRouter = require('./users/users.router');
 
 class EventsRouter {
 
@@ -9,13 +12,11 @@ class EventsRouter {
         route.route('/')
             .post(eventsController.publishEvent.bind(eventsController));
 
-        return route;
-    }
+        route.use('/applications', applicationsRouter.create());
+        route.use('/messages', messagesRouter.create());
+        route.use('/users', usersRouter.create());
 
-    get(req, res, next) {
-        res.json({
-            message: 'Hello Cioco-Sudoku'
-        });
+        return route;
     }
 }
 

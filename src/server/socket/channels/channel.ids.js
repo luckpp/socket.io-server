@@ -1,6 +1,7 @@
 // NOTE: the ids should contain only [a..z] chars
 let channelIds = {
-    messenger: 'messenger',
+    application: 'application',
+    message: 'message',
     user: 'user'
 };
 
