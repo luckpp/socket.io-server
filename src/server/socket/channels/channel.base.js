@@ -20,7 +20,7 @@ class ChannelBase extends Base {
     emit(event) {
         try {
             this.channel.emit(event.name, event.payload);
-            return new Status(true, `Message delivered on channel [${this.name}]`);
+            return new Status(true, `Message delivered to channel [${this.name}]`);
         } catch (error) {
             this.logger.error(error);
             return new Status(false, error.message);

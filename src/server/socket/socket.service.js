@@ -1,9 +1,8 @@
 const socket = require('socket.io');
 const Base = require('../../infrastructure/base');
-const MessengerChannel = require('./channels/message/message.channel');
-const UserChannel = require('./channels/user/user.channel');
 const eventValidator = require('./events/event.validator');
 const Status = require('./status');
+const channelFactory = require('./channels/channel.factory');
 
 class SocketService extends Base {
 
@@ -12,39 +11,12 @@ class SocketService extends Base {
     }
 
     startListening(server) {
-
         let io = socket(server);
         this.attachMiddleware(io);
-        let channels = this.createChannels(io);
+        let channels = channelFactory.createChannels(io);
 
         this.io = io;
         this.channels = channels;
-    }
-
-    // for internal use
-    attachMiddleware(io) {
-        io.use((socket, next) => {
-            let token = socket.handshake.query.token;
-            this.logger.debug(`Verify token [${token}]`);
-            if (token == 'tralala') {
-                next();
-            } else {
-                next(new Error('authentication error'));
-            }
-        });
-    }
-
-    // for internal use
-    createChannels(io) {
-        let channels = {};
-
-        let messengerChannel = new MessengerChannel(io);
-        channels[messengerChannel.name] = messengerChannel;
-
-        let deviceChannel = new UserChannel(io);
-        channels[deviceChannel.name] = deviceChannel;
-
-        return channels;
     }
 
     processEvent(eventWrapper) {
@@ -66,6 +38,19 @@ class SocketService extends Base {
         } 
         let status = channel.emit(event);
         return status;
+    }
+
+    // for internal use
+    attachMiddleware(io) {
+        io.use((socket, next) => {
+            let token = socket.handshake.query.token;
+            this.logger.debug(`Verify token [${token}]`);
+            if (token == 'tralala') { // TODO: make proper checks
+                next();
+            } else {
+                next(new Error('authentication error'));
+            }
+        });
     }
 }
 
