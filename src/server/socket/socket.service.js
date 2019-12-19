@@ -44,7 +44,7 @@ class SocketService extends Base {
     attachMiddleware(io) {
         io.use((socket, next) => {
             let token = socket.handshake.query.token;
-            this.logger.debug(`Verify token [${token}]`);
+            this.logger.debug(`[SocketService] Verify token [${token}]`);
             if (token == 'tralala') { // TODO: make proper checks
                 next();
             } else {
