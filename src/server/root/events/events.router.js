@@ -1,7 +1,8 @@
 const expressRouter = require('express').Router;
+const Base = require('../../../infrastructure/base');
 const eventsController = require('./events.controller');
 
-class EventsRouter {
+class EventsRouter extends Base {
 
     create() {
         let route = expressRouter();

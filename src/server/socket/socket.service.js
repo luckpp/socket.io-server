@@ -13,6 +13,8 @@ class SocketService extends Base {
     startListening(server) {
         let io = socket(server);
         this.attachMiddleware(io);
+        this.attachEventHandlers(io);
+
         let channels = channelFactory.createChannels(io);
 
         this.io = io;
@@ -45,12 +47,17 @@ class SocketService extends Base {
         io.use((socket, next) => {
             let token = socket.handshake.query.token;
             this.logger.debug(`[SocketService] Verify token [${token}]`);
-            if (token == 'tralala') { // TODO: make proper checks
+            if (token) { // TODO: make proper checks
                 next();
             } else {
                 next(new Error('authentication error'));
             }
         });
+    }
+
+    // for internal use
+    attachEventHandlers(io) {
+        
     }
 }
 

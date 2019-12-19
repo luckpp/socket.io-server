@@ -10,9 +10,9 @@ class ChannelBase extends Base {
 
         this.channel = io.of(`/${channelName}`);
         this.channel.on('connection', (socket) => {
-            this.logger.debug(`[${channelName}] Socket [${socket.id}] connected:`, socket.handshake.query);
+            this.logger.debug(`Channel [${channelName}] socket id [${socket.id}] connected:`, socket.handshake.query);
             socket.on('disconnect', () => {
-                this.logger.debug(`[${channelName}] Socket [${socket.id}] disconnected.`);
+                this.logger.debug(`Channel [${channelName}] socket id [${socket.id}] disconnected.`);
             });
         });
     }

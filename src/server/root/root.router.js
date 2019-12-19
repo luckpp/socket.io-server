@@ -1,5 +1,6 @@
-const eventsRouter = require('./events/events.router');
 const expressRouter = require('express').Router;
+const eventsRouter = require('./events/events.router');
+const apiRouter = require('./api/api.router');
 
 class RootRouter {
 
@@ -8,6 +9,7 @@ class RootRouter {
         let route = expressRouter();
 
         route.use('/events', eventsRouter.create());
+        route.use('/api', apiRouter.create());
 
         return route;
     }
