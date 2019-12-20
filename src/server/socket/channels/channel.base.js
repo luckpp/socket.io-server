@@ -17,7 +17,7 @@ class ChannelBase extends Base {
         });
     }
 
-    emit(event) {
+    emitEvent(event) {
         try {
             this.channel.emit(event.name, event.payload);
             return new Status(true, `Message delivered to channel [${this.name}]`);
